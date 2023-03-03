@@ -6,7 +6,7 @@
 /*   By: pescola- <pescola-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 07:29:43 by pescola-          #+#    #+#             */
-/*   Updated: 2023/02/28 10:48:45 by pescola-         ###   ########.fr       */
+/*   Updated: 2023/03/03 02:22:26 by pescola-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,16 @@
 
 # include <stdlib.h>
 # include <unistd.h>
+# include <limits.h>
 
-int     line_writer(char *line, int length, int file);
-char    *get_next_line(int fd);
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE	(int)1
+# endif
+
+int		ft_strlen(const char *s);
+char	*get_next_line(int fd);
+int		is_end_of_line(char	*ptr);
+int		end_loc(char *ptr);
+char	*ft_strjoin_mod(char *s1, char *s2);
+char	*ft_substr(char const *s, int start, int len);
 #endif
