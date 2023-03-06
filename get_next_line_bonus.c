@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pescola- <pescola-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 07:29:14 by pescola-          #+#    #+#             */
-/*   Updated: 2023/03/06 12:22:43 by pescola-         ###   ########.fr       */
+/*   Updated: 2023/03/06 12:30:32 by pescola-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*clean_storage(char *storage)
 {
@@ -71,21 +71,21 @@ char	*fill_storage(char *storage, int fd)
 char	*get_next_line(int fd)
 {
 	char		*next_line;
-	static char	*storage = NULL;
+	static char	*storage[OPEN_MAX] = {0};
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || BUFFER_SIZE <= 0 || fd > OPEN_MAX)
 		return (NULL);
-	if (!storage || (storage && !is_end_of_line(storage)))
-		storage = fill_storage(storage, fd);
-	if (!storage)
+	if (!storage[fd] || (storage[fd] && !is_end_of_line(storage[fd])))
+		storage[fd] = fill_storage(storage[fd], fd);
+	if (!storage[fd])
 		return (NULL);
-	next_line = get_the_line(storage);
+	next_line = get_the_line(storage[fd]);
 	if (!next_line)
 	{
-		free(storage);
-		storage = NULL;
+		free(storage[fd]);
+		storage[fd] = NULL;
 		return (NULL);
 	}
-	storage = clean_storage(storage);
+	storage[fd] = clean_storage(storage[fd]);
 	return (next_line);
 }
